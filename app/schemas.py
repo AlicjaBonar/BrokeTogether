@@ -17,3 +17,24 @@ class UserRead(BaseModel):
 class UserUpdate(BaseModel):
     username: Optional[str] = None
     password: Optional[str] = None
+
+
+class ExpenseCreate(BaseModel):
+    user_id: int
+    group_id: int
+    amount: float
+    description: str
+
+class ExpenseRead(BaseModel):
+    id: int
+    user_id: int
+    group_id: int
+    amount: float
+    description: Optional[str] = None
+
+    class Config:
+        orm_mode = True
+
+class ExpenseUpdate(BaseModel):
+    amount: Optional[float] = None
+    description: Optional[str] = None
