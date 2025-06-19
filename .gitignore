@@ -1,0 +1,5 @@
+Broke.db
+__pycache__
+app/__pycache__
+database/__pycache__
+routers/__pycache__
