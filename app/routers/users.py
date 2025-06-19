@@ -20,20 +20,12 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
 
 import os
 
-TEMPLATES_DIR = "./app/templates"
-
-def list_templates():
-    return [f for f in os.listdir(TEMPLATES_DIR) if f.endswith(".html")]
-
-# użycie
-
 # READ all
 #@router.get("/", response_model=List[UserRead])
 @router.get("/", response_class=HTMLResponse)
 def get_users(request: Request, db: Session = Depends(get_db)):
     #return get_all_users(db)
     users = get_all_users(db)
-    print(list_templates())
     return templates.TemplateResponse("users.html", {"request": request, "users": users})
 
 

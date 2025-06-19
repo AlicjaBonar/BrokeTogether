@@ -42,3 +42,16 @@ class Group(Base):
         secondary=user_group_association,
         back_populates="groups"
     )
+
+
+class Expense(Base):
+    __tablename__ = "expenses"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
+    group_id: Mapped[int] = mapped_column(ForeignKey("groups.id"), nullable=False)
+    amount: Mapped[float] = mapped_column(nullable=False)
+    description: Mapped[str] = mapped_column(Text, nullable=True)
+
+    # user: Mapped["User"] = relationship("User", back_populates="expenses")
+    # group: Mapped["Group"] = relationship("Group", back_populates="expenses")
