@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, Request
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
 from app.models import User
@@ -7,19 +7,34 @@ from app.schemas import UserCreate, UserRead, UserUpdate
 from app.services.user_service import *
 from typing import List
 import bcrypt
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
 
 router = APIRouter(prefix="/users", tags=["Users"])
+templates = Jinja2Templates(directory="./app/templates")
 
 # CREATE
 @router.post("/", response_model=UserRead)
 def create_user(user: UserCreate, db: Session = Depends(get_db)):
     return create_user_in_db(user, db)
 
+import os
+
+TEMPLATES_DIR = "./app/templates"
+
+def list_templates():
+    return [f for f in os.listdir(TEMPLATES_DIR) if f.endswith(".html")]
+
+# użycie
 
 # READ all
-@router.get("/", response_model=List[UserRead])
-def get_users(db: Session = Depends(get_db)):
-    return get_all_users(db)
+#@router.get("/", response_model=List[UserRead])
+@router.get("/", response_class=HTMLResponse)
+def get_users(request: Request, db: Session = Depends(get_db)):
+    #return get_all_users(db)
+    users = get_all_users(db)
+    print(list_templates())
+    return templates.TemplateResponse("users.html", {"request": request, "users": users})
 
 
 # READ one
