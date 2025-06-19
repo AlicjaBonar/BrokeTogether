@@ -5,7 +5,7 @@ from app.models import Base
 
 
 def print_usage():
-    print("Usage: python main.py <database_name>")
+    print("Usage: python create_database.py <database_name>")
     sys.exit(1)
 
 
