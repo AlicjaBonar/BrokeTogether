@@ -14,6 +14,7 @@ from app.routers.users import router as users_router
 from app.routers.groups import router as groups_router
 from app.routers.user_group import router as user_group_router
 from app.routers.expenses import router as expenses_router
+from app.routers.balances import router as balances_router
 
 app = FastAPI()
 
@@ -21,6 +22,7 @@ app.include_router(users_router)
 app.include_router(groups_router)
 app.include_router(user_group_router)
 app.include_router(expenses_router)
+app.include_router(balances_router)
 
 """
 if __name__ == "__main__":
