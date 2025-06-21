@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Group: {{ group.name }}{% endblock %}
+
+{% block content %}
+<h2>Group: {{ group.name }}</h2>
+
+<h3>Members:</h3>
+{% if group.users %}
+    <ul class="member-list">
+        {% for user in group.users %}
+            <li>{{ user.username }}</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No members in this group yet.</p>
+{% endif %}
+
+<!-- Add new member form (could be via user_id, username or selection dropdown) -->
+<form action="/user-groups/add-form" method="post">
+    <input type="hidden" name="group_id" value="{{ group.id }}">
+    
+    <label for="user_id">Add member by User ID:</label>
+    <input type="number" name="user_id" id="user_id" required>
+    
+    <button type="submit">Add New Member</button>
+</form>
+
+<hr>
+
+<h3>Group Expenses:</h3>
+{% if expenses %}
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Amount</th>
+                <th>Description</th>
+                <th>User ID</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for expense in expenses %}
+                <tr>
+                    <td>{{ expense.id }}</td>
+                    <td>{{ expense.amount }}</td>
+                    <td>{{ expense.description or "—" }}</td>
+                    <td>{{ expense.user_id }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No expenses for this group yet.</p>
+{% endif %}
+
+{% endblock %}

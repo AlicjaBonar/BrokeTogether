@@ -5,4 +5,11 @@
 {% block content %}
 <h2>Welcome to BrokeTogether</h2>
 <p>This is the homepage of the app.</p>
+
+{% if user %}
+    <p>Hello, {{ user.username }}! You are logged in.</p>
+{% else %}
+    <p>You are not logged in.</p>
+{% endif %}
+
 {% endblock %}

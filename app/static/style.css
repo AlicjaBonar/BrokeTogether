@@ -23,3 +23,19 @@ footer {
     margin-top: 2rem;
     color: #666;
 }
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+table th, table td {
+    border: 1px solid #ccc;
+    padding: 0.5rem;
+    text-align: left;
+}
+
+table th {
+    background-color: #f4f4f4;
+}

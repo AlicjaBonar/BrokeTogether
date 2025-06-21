@@ -5,9 +5,27 @@ from app.models import User
 from app.schemas import UserCreate, UserUpdate
 from fastapi import HTTPException
 import bcrypt
+from datetime import timedelta, datetime
+from jose import jwt, JWTError
+from app.models import Group
+
+from fastapi_login import LoginManager
+from fastapi_login.exceptions import InvalidCredentialsException
+
+SECRET = "super-secret-key"  # We should change this to something secure
+ALGORITHM = "HS256"
+
+#manager = LoginManager(SECRET, token_url="/auth/token")
 
 def hash_password(plain_password: str) -> str:
     return bcrypt.hashpw(plain_password.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
+
+def verify_password(plain_password: str, hashed_password: str) -> bool:
+    return bcrypt.checkpw(plain_password.encode('utf-8'), hashed_password.encode('utf-8'))
+
+#@manager.user_loader
+def load_user(username: str, db: Session):
+    return db.query(User).filter(User.username == username).first()
 
 def create_user_in_db(user_data: UserCreate, db: Session) -> User:
     existing = db.query(User).filter(User.username == user_data.username).first()
@@ -49,3 +67,24 @@ def delete_user_from_db(db: Session, user_id: int) -> bool:
     db.delete(user)
     db.commit()
     return True
+
+
+def create_access_token(username: str, user_id: int, expires_delta: timedelta):
+    encode = {'sub': username, 'id': user_id}
+    expires = datetime.now() + expires_delta
+    encode.update({'exp': expires})
+    return jwt.encode(encode, SECRET, algorithm=ALGORITHM)
+
+def authenticate_user(username: str, password: str, db: Session) -> str:
+    user = db.query(User).filter(User.username == username).first()
+    print("Czy user znaleziony: ", user == None)
+    if not user or not bcrypt.checkpw(password.encode(), user.hashed_password.encode()):
+        raise InvalidCredentialsException
+    return create_access_token(username=username, user_id=user.id, expires_delta=timedelta(seconds=50000))
+
+def get_all_users_from_group(group_id: int, db: Session):
+    group = db.query(Group).get(group_id)
+    if not group:
+        raise HTTPException(status_code=404, detail="Group not found")
+
+    return group.users

@@ -1,73 +1,48 @@
-from pydantic import BaseModel
-from typing import List, Optional
-
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from typing import List
 
-from app.models import Group
+from app.schemas import GroupCreate, GroupRead
 from app.database.get_db import get_db
+from app.services.group_service import *
+from fastapi import APIRouter, HTTPException, Depends, Request, Form
+from sqlalchemy.orm import Session
+from pydantic import BaseModel
+from app.database.get_db import get_db
+from typing import List
+import bcrypt
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
+from app.services.user_service import get_all_users_from_group
+from app.services.expenses_service import get_expenses_from_group
 
 router = APIRouter(prefix="/groups", tags=["Groups"])
+templates = Jinja2Templates(directory="./app/templates")
 
-class GroupCreate(BaseModel):
-    name: str
-
-class GroupRead(BaseModel):
-    id: int
-    name: str
-    # opcjonalnie możesz dodać listę userów, np.:
-    # users: Optional[List[int]] = []
-
-    class Config:
-        orm_mode = True
-
-
-# CREATE
 @router.post("/", response_model=GroupRead)
-def create_group(group: GroupCreate, db: Session = Depends(get_db)):
-    existing = db.query(Group).filter(Group.name == group.name).first()
-    if existing:
-        raise HTTPException(status_code=400, detail="Group with this name already exists")
-    
-    new_group = Group(name=group.name)
-    db.add(new_group)
-    db.commit()
-    db.refresh(new_group)
-    return new_group
+def create_group_post(group: GroupCreate, db: Session = Depends(get_db)):
+    return create_group(db, group)
 
-# READ all
-@router.get("/", response_model=List[GroupRead])
-def get_groups(db: Session = Depends(get_db)):
-    return db.query(Group).all()
 
-# READ one
-@router.get("/{group_id}", response_model=GroupRead)
-def get_group(group_id: int, db: Session = Depends(get_db)):
-    group = db.query(Group).get(group_id)
-    if not group:
-        raise HTTPException(status_code=404, detail="Group not found")
-    return group
+@router.get("/", response_class=HTMLResponse)
+def get_groups(request: Request, db: Session = Depends(get_db)):
+    groups = get_all_groups(db)
+    return templates.TemplateResponse("groups.html", {"request": request, "groups": groups})
 
-# UPDATE
+
+@router.get("/{group_id}", response_class=HTMLResponse)
+def get_group(request: Request, group_id: int, db: Session = Depends(get_db)):
+    group = get_group_by_id(db, group_id)
+    users = get_all_users_from_group(group_id, db)
+    expenses = get_expenses_from_group(group_id, db)
+    return templates.TemplateResponse("group_detail.html", {"request": request, "group": group, "users": users, "expenses": expenses})
+
+
 @router.put("/{group_id}", response_model=GroupRead)
-def update_group(group_id: int, group_data: GroupCreate, db: Session = Depends(get_db)):
-    group = db.query(Group).get(group_id)
-    if not group:
-        raise HTTPException(status_code=404, detail="Group not found")
-    
-    group.name = group_data.name
-    db.commit()
-    db.refresh(group)
-    return group
+def update_group_put(group_id: int, group_data: GroupCreate, db: Session = Depends(get_db)):
+    return update_group(db, group_id, group_data)
 
-# DELETE
+
 @router.delete("/{group_id}")
-def delete_group(group_id: int, db: Session = Depends(get_db)):
-    group = db.query(Group).get(group_id)
-    if not group:
-        raise HTTPException(status_code=404, detail="Group not found")
-    
-    db.delete(group)
-    db.commit()
-    return {"detail": "Group deleted"}
+def delete_group_del(group_id: int, db: Session = Depends(get_db)):
+    return delete_group(db, group_id)

@@ -21,12 +21,13 @@ def create_expense(expense: ExpenseCreate, db: Session = Depends(get_db)):
     return new_expense
 
 # READ all
-@router.get("/", response_model=List[ExpenseRead])
+@router.get("/all", response_model=List[ExpenseRead])
 def get_expenses(db: Session = Depends(get_db)):
     return db.query(Expense).all()
 
+
 # READ one
-@router.get("/{expense_id}", response_model=ExpenseRead)
+@router.get("/one/{expense_id}", response_model=ExpenseRead)
 def get_expense(expense_id: int, db: Session = Depends(get_db)):
     expense = db.query(Expense).get(expense_id)
     if not expense:

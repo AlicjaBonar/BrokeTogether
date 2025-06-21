@@ -38,3 +38,46 @@ class ExpenseRead(BaseModel):
 class ExpenseUpdate(BaseModel):
     amount: Optional[float] = None
     description: Optional[str] = None
+
+class LoginRequest(BaseModel):
+    username: str
+    password: str
+
+class LoginResponse(BaseModel):
+    message: str
+    user_id: int
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+
+class GroupCreate(BaseModel):
+    name: str
+
+
+class GroupRead(BaseModel):
+    id: int
+    name: str
+
+    class Config:
+        orm_mode = True
+
+
+class UserRead(BaseModel):
+    id: int
+    username: str
+
+    class Config:
+        orm_mode = True
+
+class GroupRead(BaseModel):
+    id: int
+    name: str
+
+    class Config:
+        orm_mode = True
+
+class UserGroupAddRequest(BaseModel):
+    user_id: int
+    group_id: int
