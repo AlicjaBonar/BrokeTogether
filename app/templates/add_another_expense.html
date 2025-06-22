@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Create New Expense?{% endblock %}
+
+{% block content %}
+  <h2>Do you want to create a new expense?</h2>
+
+  <form action="/expenses/add-form/{{ group.id }}" method="get" style="display:inline;">
+    <button type="submit">Yes, create new expense</button>
+  </form>
+
+  <form action="/groups/{{ group.id }}" method="get" style="display:inline; margin-left: 1rem;">
+    <button type="submit">No, go back to group view</button>
+  </form>
+{% endblock %}

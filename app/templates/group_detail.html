@@ -28,8 +28,23 @@
 
 <hr>
 
-<h3>Group Expenses:</h3>
-{% if expenses %}
+    <!-- Show Balances Button -->
+    <div style="margin-top: 2rem;">
+        <form action="/balances/group/{{group.id}}">
+            <button type="submit">Show Balances</button>
+        </form>
+    </div>
+
+    <!-- Show Add Expense Button -->
+    <div style="margin-top: 2rem;">
+        <form action="/expenses/add-form/{{group.id}}">
+            <button type="submit">Add Expense</button>
+        </form>
+    </div>
+
+
+{% if expenses %}    
+    <h3>Group Expenses:</h3>
     <table>
         <thead>
             <tr>

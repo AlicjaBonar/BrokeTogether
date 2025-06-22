@@ -30,6 +30,12 @@ class User(Base):
         back_populates="users"
     )
 
+    expenses: Mapped[list["Expense"]] = relationship(
+        "Expense",
+        back_populates="user",
+        cascade="all, delete-orphan"
+    )
+
     
 class Group(Base):
     __tablename__ = "groups"
@@ -42,6 +48,12 @@ class Group(Base):
         secondary=user_group_association,
         back_populates="groups"
     )
+    
+    expenses: Mapped[list["Expense"]] = relationship(
+        "Expense",
+        back_populates="group",
+        cascade="all, delete-orphan"
+    )
 
 
 class Expense(Base):
@@ -53,5 +65,5 @@ class Expense(Base):
     amount: Mapped[float] = mapped_column(nullable=False)
     description: Mapped[str] = mapped_column(Text, nullable=True)
 
-    # user: Mapped["User"] = relationship("User", back_populates="expenses")
-    # group: Mapped["Group"] = relationship("Group", back_populates="expenses")
+    user: Mapped["User"] = relationship("User", back_populates="expenses")
+    group: Mapped["Group"] = relationship("Group", back_populates="expenses")

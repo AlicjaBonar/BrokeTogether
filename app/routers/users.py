@@ -18,7 +18,6 @@ templates = Jinja2Templates(directory="./app/templates")
 def create_user(user: UserCreate, db: Session = Depends(get_db)):
     return create_user_in_db(user, db)
 
-import os
 
 # READ all
 #@router.get("/", response_model=List[UserRead])
@@ -55,14 +54,3 @@ def delete_user(user_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="User not found")
     return {"detail": "User deleted"}
 
-# LOGIN
-@router.get("/login", response_class=HTMLResponse)
-def login_page(request: Request, error: str | None = None):
-    return templates.TemplateResponse("users.html", {"request": request, "error": error})
-
-
-@router.post("/auth/token")
-def login(username: str = Form(), password: str = Form(), db=Depends(get_db)):
-    token = authenticate_user(username, password, db)
-    return {"access_token": token, "token_type": "bearer"}
-    #return templates.TemplateResponse("login.html", {"request": request, "error": error_message})

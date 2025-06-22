@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}{{ group.name }} - Balance{% endblock %}
+
+{% block content %}
+<h2>Balance for Group: {{ group.name }}</h2>
+
+{% if balances %}
+    <table>
+        <thead>
+            <tr>
+                <th>Debtor</th>
+                <th>Debtee</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in balances %}
+                <tr>
+                    <td>{{ row.debtor_username }} (ID: {{ row.debtor_id }})</td>
+                    <td>{{ row.debtee_username }} (ID: {{ row.debtee_id }})</td>
+                    <td>{{ row.amount }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No balance data available for this group.</p>
+{% endif %}
+
+<!-- Back link -->
+<div style="margin-top: 2rem;">
+    <a href="/groups/{{group.id}}">← Back to Group Details</a>
+</div>
+{% endblock %}

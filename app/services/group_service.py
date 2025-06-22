@@ -20,6 +20,9 @@ def create_group(db: Session, group_data: GroupCreate):
 def get_all_groups(db: Session):
     return db.query(Group).all()
 
+def get_one_group(db: Session, group_id: int):
+    return db.query(Group).get(group_id)
+
 
 def get_group_by_id(db: Session, group_id: int):
     group = db.query(Group).get(group_id)
