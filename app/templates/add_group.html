@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %} Add new group {% endblock %}
+
+{% block content %}
+<h2> Add new group: </h2>
+
+<form action="/forms/group" method="post">
+
+    <!-- Name -->
+    <label for="name">Name:</label>
+    <input type="text" name="name" id="name"><br><br>
+
+    <!-- Submit -->
+    <button type="submit">Add group</button>
+</form>
+
+{% endblock %}

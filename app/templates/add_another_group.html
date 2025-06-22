@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Add new group?{% endblock %}
+
+{% block content %}
+  <h2>You have just added a new group. Do you want to add another one?</h2>
+
+  <form action="/forms/group" method="get" style="display:inline;">
+    <button type="submit">Yes, add new group</button>
+  </form>
+
+  <form action="/groups" method="get" style="display:inline; margin-left: 1rem;">
+    <button type="submit">No, go to group view</button>
+  </form>
+{% endblock %}

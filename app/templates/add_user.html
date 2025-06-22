@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %} Add new user {% endblock %}
+
+{% block content %}
+<h2> Add new user: </h2>
+
+<form action="/forms/user" method="post">
+
+    <!-- Username -->
+    <label for="username">Username:</label>
+    <input type="text" name="username" id="username"><br><br>
+
+    <!-- Password -->
+    <label for="password">Password:</label>
+    <input type="password" name="password" id="password"><br><br>
+
+
+    <!-- Submit -->
+    <button type="submit">Add user</button>
+</form>
+
+{% endblock %}

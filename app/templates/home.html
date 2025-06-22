@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome to Expense Splitter{% endblock %}
+
+{% block content %}
+<div class="homepage">
+    <h1>Welcome to BrokeT</h1>
+    <p>This app helps you manage and split group expenses easily.</p>
+
+    <hr>
+
+    <h2>What would you like to do?</h2>
+    <ul class="action-list">
+        <li><a href="/forms/group">Create a New Group</a></li>
+        <li><a href="/groups">View Existing Groups</a></li>
+        <li><a href="/users">Add New User</a></li>
+    </ul>
+
+    <hr>
+
+    <h3>About</h3>
+    <p>
+        Manage expenses between friends, roommates, travel buddies, and more.
+        Each group can have members and shared expenses.
+        The app will calculate who owes whom how much.
+    </p>
+</div>
+{% endblock %}
