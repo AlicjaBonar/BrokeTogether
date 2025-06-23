@@ -43,11 +43,11 @@ def get_all_users(db: Session):
     return db.query(User).all()
 
 def get_user_by_id(db: Session, user_id: int) -> User | None:
-    return db.query(User).get(user_id)
+    return db.get(User, user_id)
 
 
 def update_user_in_db(db: Session, user_id: int, user_data: UserUpdate) -> User:
-    user = db.query(User).get(user_id)
+    user = db.get(User, user_id)
     if not user:
         return None
 
@@ -61,7 +61,7 @@ def update_user_in_db(db: Session, user_id: int, user_data: UserUpdate) -> User:
 
 
 def delete_user_from_db(db: Session, user_id: int) -> bool:
-    user = db.query(User).get(user_id)
+    user = db.get(User, user_id)
     if not user:
         return False
     db.delete(user)
@@ -83,7 +83,7 @@ def authenticate_user(username: str, password: str, db: Session) -> str:
     return create_access_token(username=username, user_id=user.id, expires_delta=timedelta(seconds=50000))
 
 def get_all_users_from_group(group_id: int, db: Session):
-    group = db.query(Group).get(group_id)
+    group = db.get(Group, group_id)
     if not group:
         raise HTTPException(status_code=404, detail="Group not found")
 

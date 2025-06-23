@@ -29,14 +29,14 @@ def get_all_expenses(db: Session) -> list[Expense]:
 
 
 def get_expense_by_id(expense_id: int, db: Session) -> Expense:
-    expense = db.query(Expense).get(expense_id)
+    expense = db.get(Expense, expense_id)
     if not expense:
         raise HTTPException(status_code=404, detail="Expense not found")
     return expense
 
 
 def update_expense_in_db(expense_id: int, expense_data: ExpenseUpdate, db: Session) -> Expense:
-    expense = db.query(Expense).get(expense_id)
+    expense = db.get(Expense, expense_id)
     if not expense:
         raise HTTPException(status_code=404, detail="Expense not found")
 
@@ -49,7 +49,7 @@ def update_expense_in_db(expense_id: int, expense_data: ExpenseUpdate, db: Sessi
 
 
 def delete_expense_from_db(expense_id: int, db: Session) -> Expense:
-    expense = db.query(Expense).get(expense_id)
+    expense = db.get(Expense, expense_id)
     if not expense:
         raise HTTPException(status_code=404, detail="Expense not found")
 

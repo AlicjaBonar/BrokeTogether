@@ -46,3 +46,5 @@ def update_group_put(group_id: int, group_data: GroupCreate, db: Session = Depen
 @router.delete("/{group_id}")
 def delete_group_del(group_id: int, db: Session = Depends(get_db)):
     return delete_group(db, group_id)
+
+

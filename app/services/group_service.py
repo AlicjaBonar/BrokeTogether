@@ -21,18 +21,18 @@ def get_all_groups(db: Session):
     return db.query(Group).all()
 
 def get_one_group(db: Session, group_id: int):
-    return db.query(Group).get(group_id)
+    return db.get(Group, group_id)
 
 
 def get_group_by_id(db: Session, group_id: int):
-    group = db.query(Group).get(group_id)
+    group = db.get(Group, group_id)
     if not group:
         raise HTTPException(status_code=404, detail="Group not found")
     return group
 
 
 def update_group(db: Session, group_id: int, group_data: GroupCreate):
-    group = db.query(Group).get(group_id)
+    group = db.get(Group, group_id)
     if not group:
         raise HTTPException(status_code=404, detail="Group not found")
 
@@ -43,7 +43,7 @@ def update_group(db: Session, group_id: int, group_data: GroupCreate):
 
 
 def delete_group(db: Session, group_id: int):
-    group = db.query(Group).get(group_id)
+    group = db.get(Group, group_id)
     if not group:
         raise HTTPException(status_code=404, detail="Group not found")
 

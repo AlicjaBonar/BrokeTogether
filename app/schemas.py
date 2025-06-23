@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from typing import Optional
 
 # Pydantic Schemas
@@ -11,8 +11,7 @@ class UserRead(BaseModel):
     username: str
     hashed_password: str
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 class UserUpdate(BaseModel):
     username: Optional[str] = None
@@ -32,8 +31,7 @@ class ExpenseRead(BaseModel):
     amount: float
     description: Optional[str] = None
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 class ExpenseUpdate(BaseModel):
     amount: Optional[float] = None
@@ -60,23 +58,20 @@ class GroupRead(BaseModel):
     id: int
     name: str
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class UserRead(BaseModel):
     id: int
     username: str
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 class GroupRead(BaseModel):
     id: int
     name: str
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 class UserGroupAddRequest(BaseModel):
     user_id: int
