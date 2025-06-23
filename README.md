@@ -20,16 +20,16 @@ Follow these steps to run the app locally:
 1. **Clone the repository**
 
    ```bash
-   ```git clone https://github.com/AlicjaBonar/BrokeTogether.git
-   ```cd BrokeTogether
+   git clone https://github.com/AlicjaBonar/BrokeTogether.git
+   cd BrokeTogether
 
 2. **Install dependencies**
     ```bash
-    ```pip install -r requirements.txt
+    pip install -r requirements.txt
 
 3. **Run the server**
     ```bash
-    ```uvicorn main:app --reload
+    uvicorn main:app --reload
 
 4. **Open your browser**
 
