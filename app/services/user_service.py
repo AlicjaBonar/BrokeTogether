@@ -88,3 +88,14 @@ def get_all_users_from_group(group_id: int, db: Session):
         raise HTTPException(status_code=404, detail="Group not found")
 
     return group.users
+
+def get_all_users_not_in_group(group_id: int, db: Session):
+    group = db.get(Group, group_id)
+    if not group:
+        raise HTTPException(status_code=404, detail="Group not found")
+
+    user_ids_in_group = [user.id for user in group.users]
+
+    users_not_in_group = db.query(User).filter(User.id.notin_(user_ids_in_group)).all()
+
+    return users_not_in_group
