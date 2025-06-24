@@ -38,6 +38,29 @@ Follow these steps to run the app locally:
 
     - API docs (Swagger UI): http://127.0.0.1:8000/docs
 
+## Running with Docker
+
+Make sure you have Docker Desktop installed.
+
+1. **Build and run the container**
+    ```bash
+    docker-compose up --build
+
+2. **Open in browser**
+
+    App: http://localhost:8000/
+
+    Docs: http://localhost:8000/docs
+
+3. **Stopping the container**
+
+    In the terminal where Docker is running, press Ctrl + C, then:
+
+    ```bash
+    docker-compose down
+
+
+
 ## Notes
 
 - The server runs in development mode (--reload) so changes update automatically.
