@@ -7,7 +7,7 @@ from app.schemas import UserCreate, UserRead, UserUpdate
 from app.services.user_service import *
 from typing import List
 import bcrypt
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 
 router = APIRouter(prefix="/users", tags=["Users"])
@@ -53,4 +53,12 @@ def delete_user(user_id: int, db: Session = Depends(get_db)):
     if not success:
         raise HTTPException(status_code=404, detail="User not found")
     return {"detail": "User deleted"}
+
+# DELETE post
+@router.post("/{user_id}/delete")
+def delete_user_post(user_id: int, db: Session = Depends(get_db)):
+    success = delete_user_from_db(db, user_id)
+    if not success:
+        raise HTTPException(status_code=404, detail="User not found")
+    return RedirectResponse(url="/users", status_code=302)
 

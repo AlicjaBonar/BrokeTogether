@@ -7,18 +7,23 @@
 <!-- Show Add User Button -->
 <div style="margin-top: 2rem;">
     <form action="/forms/user">
-        <button type="submit">Add User</button>
+        <button type="submit" class="btn">Add User</button>
     </form>
 </div>
 
 <h2>User Management</h2>
 
-<ul>
+<div class="user-list">
   {% for user in users %}
-    <li>{{ user.username }}</li>
+    <div class="user-card">
+      <span class="username">{{ user.username }}</span>
+      <form action="/users/{{ user.id }}/delete" method="post" onsubmit="return confirm('Na pewno chcesz usunąć użytkownika {{ user.username }}?');">
+        <button type="submit" class="delete-button">Delete</button>
+      </form>
+    </div>
   {% else %}
-    <li>No users found.</li>
+    <p>No users found.</p>
   {% endfor %}
-</ul>
+</div>
 
 {% endblock %}

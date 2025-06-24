@@ -5,42 +5,57 @@
 {% block content %}
 <h2>Group: {{ group.name }}</h2>
 
+<form action="/groups/{{ group.id }}/delete" method="post" onsubmit="return confirm('Na pewno chcesz usunąć tę grupę?');">
+    <button type="submit" class="button delete-button">
+        Delete Group
+    </button>
+</form>
+
 <h3>Members:</h3>
 {% if group.users %}
-    <ul class="member-list">
+    <div class="member-list">
         {% for user in group.users %}
-            <li>{{ user.username }}</li>
+            <div class="member-card">
+            <span class="membername">{{ user.username }}</span>
+            <form action="/user-groups/user/{{ user.id }}/group/{{ group.id }}/delete" method="post">
+                <button type="submit" class="remove-button">Remove</button>
+            </form>
+            </div>
         {% endfor %}
-    </ul>
+    </div>
 {% else %}
     <p>No members in this group yet.</p>
 {% endif %}
 
-<!-- Add new member form (could be via user_id, username or selection dropdown) -->
-<form action="/user-groups/add-form" method="post">
+
+<!-- Add new member form -->
+<form action="/user-groups/add-form" method="post" class="add-member-form">
     <input type="hidden" name="group_id" value="{{ group.id }}">
+    <select name="user_id" id="user_id" required class="user-select">
+    {% for user in all_users %}
+        <option value="{{ user.id }}">{{ user.username }}</option>
+    {% endfor %}
+    </select>
     
-    <label for="user_id">Add member by User ID:</label>
-    <input type="number" name="user_id" id="user_id" required>
-    
-    <button type="submit">Add New Member</button>
+    <button type="submit" class="btn add-member-btn">Add New Member</button>
 </form>
 
-<hr>
+<hr class="divider">
 
-    <!-- Show Balances Button -->
-    <div style="margin-top: 2rem;">
-        <form action="/balances/group/{{group.id}}">
-            <button type="submit">Show Balances</button>
-        </form>
-    </div>
+<!-- Show Balances Button -->
+<div class="button-container">
+    <form action="/balances/group/{{group.id}}">
+        <button type="submit" class="btn balances-btn">Show Balances</button>
+    </form>
+</div>
 
-    <!-- Show Add Expense Button -->
-    <div style="margin-top: 2rem;">
-        <form action="/expenses/add-form/{{group.id}}">
-            <button type="submit">Add Expense</button>
-        </form>
-    </div>
+<!-- Show Add Expense Button -->
+<div class="button-container">
+    <form action="/expenses/add-form/{{group.id}}">
+        <button type="submit" class="btn add-expense-btn">Add Expense</button>
+    </form>
+</div>
+
 
 
 {% if expenses %}    

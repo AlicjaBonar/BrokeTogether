@@ -49,6 +49,11 @@ def api_add_user_to_group_form(user_id: int = Form(...), group_id: int = Form(..
 def api_remove_user_from_group(user_id: int, group_id: int, db: Session = Depends(get_db)):
     return remove_user_from_group(db, user_id, group_id)
 
+@router.post("/user/{user_id}/group/{group_id}/delete")
+def api_remove_user_from_group_post(user_id: int, group_id: int, db: Session = Depends(get_db)):
+    remove_user_from_group(db, user_id, group_id)
+    return RedirectResponse(url=f"/groups/{group_id}", status_code=302)
+
 @router.get("/group/{group_id}/users", response_model=List[UserRead])
 def api_get_users_in_group(group_id: int, db: Session = Depends(get_db)):
     return get_users_in_group(db, group_id)
